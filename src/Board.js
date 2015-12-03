@@ -164,7 +164,7 @@
         _.each(row, function(sq, ci) {
           if (sq) {
             console.log('present');
-            if (context._getFirstRowColumnIndexForMajorDiagonalOn(ci, ri)) {
+            if (context.hasMajorDiagonalConflictAt(ci, ri)) {
               console.log('got here!');
               conflicts = true;
             }
