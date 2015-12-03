@@ -160,18 +160,18 @@
         //if diag fx return true, return conflicts is true
       var conflicts = false;
       var context = this;
-      _.each(this.rows(), function(row, ri) {
-        _.each(row, function(sq, ci) {
-          if (sq) {
+      var matrix = this.rows();
+      for (var ri = 0; ri < matrix.length - 1; ri++) {
+        for (var ci = 0; ci < matrix[ri].length - 1; ci++) {
+          if (matrix[ri][ci]) {
             console.log('present');
             if (context.hasMajorDiagonalConflictAt(ci, ri)) {
               console.log('got here!');
               conflicts = true;
             }
           }
-        })
-      })
-
+        }
+      }
       return conflicts; // fixme
     },
 
@@ -185,13 +185,40 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow, rowInput) {
+      rowInput = rowInput || 0;
+      var conflicts = 0;
+      var context = this;
+      var target = context._getFirstRowColumnIndexForMinorDiagonalOn(rowInput, minorDiagonalColumnIndexAtFirstRow);
+      _.each(this.rows(), function(row, ri) {
+        _.each(row, function(sq, ci) {
+          if ( target === context._getFirstRowColumnIndexForMinorDiagonalOn(ri, ci) ) {
+            if (sq) {
+              conflicts++;
+            }
+          }
+        })
+      })
+      return conflicts > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var conflicts = false;
+      var context = this;
+      var matrix = this.rows();
+      for (var ri = 0; ri < matrix.length - 1; ri++) {
+        for (var ci = 1; ci < matrix[ri].length; ci++) {
+          if (matrix[ri][ci]) {
+            console.log('present');
+            if (context.hasMinorDiagonalConflictAt(ci, ri)) {
+              console.log('got here!');
+              conflicts = true;
+            }
+          }
+        }
+      }
+      return conflicts; // fixme
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
