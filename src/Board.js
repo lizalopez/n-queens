@@ -164,9 +164,9 @@
       for (var ri = 0; ri < matrix.length - 1; ri++) {
         for (var ci = 0; ci < matrix[ri].length - 1; ci++) {
           if (matrix[ri][ci]) {
-            console.log('present');
+            // console.log('present');
             if (context.hasMajorDiagonalConflictAt(ci, ri)) {
-              console.log('got here!');
+              // console.log('got here!');
               conflicts = true;
             }
           }
@@ -210,9 +210,9 @@
       for (var ri = 0; ri < matrix.length - 1; ri++) {
         for (var ci = 1; ci < matrix[ri].length; ci++) {
           if (matrix[ri][ci]) {
-            console.log('present');
+            // console.log('present');
             if (context.hasMinorDiagonalConflictAt(ci, ri)) {
-              console.log('got here!');
+              // console.log('got here!');
               conflicts = true;
             }
           }
