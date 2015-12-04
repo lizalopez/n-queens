@@ -16,7 +16,7 @@
 
 
 window.findNRooksSolution = function(n) {
-  board = board || new Board ({n: n});
+  var board = board || new Board ({n: n});
 // wrap with diagonal loop]
   for (var i = 0; i < n; i ++) {
       if ( !board.hasAnyRooksConflicts() ) {
@@ -64,7 +64,7 @@ window.countNRooksSolutions = function(n) {
   var newBoard = new Board({n : n});
 
   function subroutine(row, board) {
-    if (row === n - 1) {
+    if (row === n) {
       solutionCount++;
       return;
     }
@@ -90,14 +90,32 @@ window.findNQueensSolution = function(n) {
   //   return 1;
   // }
   var solution = new Board ({n: n});
+  var results = undefined;
+  console.log(solution.rows());
+  var findSubroutine = function(row, board) {
+    if (row === n) { //row is row index, n is column index
+      results = board;
+      console.log('results before map:', results, 'at n:', n)
+      results =  results.rows().map(function(row) {
+        return row.slice();
+      });
+      console.log('Single solution for ' + n + ' queens:', results);
+      return results;
+    }
 
-  for (var i = 0; i < n; i ++) {
-      if ( !solution.hasAnyRooksConflicts() ) {
-          solution.togglePiece(i, i);
+    for (var i = 0; i < n; i++) {
+      board.togglePiece(row, i);
+      if ( !board.hasAnyQueensConflicts() ) {
+        return findSubroutine(row+1, board);
       }
+      board.togglePiece(row, i);
+    }
+  };
+  
+  if (n === 0 || n === 2 || n === 3) {
+    return new Board({n: n}).rows();
   }
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution.rows().length));
-  return solution.rows();
+  return findSubroutine(0, solution);
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
